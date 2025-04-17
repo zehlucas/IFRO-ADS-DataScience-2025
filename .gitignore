@@ -1,0 +1,28 @@
+# Ambientes virtuais
+venv/
+.env/
+.venv/
+
+# Jupyter notebooks checkpoints
+__pycache__/
+.ipynb_checkpoints/
+
+# Arquivos do VS Code
+.vscode/
+
+# Dados temporários ou sensíveis
+*.csv
+*.tsv
+*.log
+*.sqlite3
+*.db
+*.h5
+
+# Arquivos gerados por modelos
+*.pkl
+*.joblib
+*.hdf5
+
+# Arquivos do sistema operacional
+.DS_Store
+Thumbs.db
