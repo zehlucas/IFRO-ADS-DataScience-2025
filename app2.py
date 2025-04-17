@@ -8,12 +8,35 @@ import plotly.express as px
 df_localidades = pd.read_csv("localidades.csv")
 df_acidentes = pd.read_csv("acidentes.csv", low_memory=False)
 
+# ------------------------------
+# 📊 Menu lateral para seleção do estado
+# ------------------------------
+
+st.sidebar.title("🚦 Análise de Acidentes dos Estados Brasileiros")
+opcao = st.sidebar.selectbox(
+    "Selecione o estado", ["Todos os Estados"] + df_localidades['uf'].unique().tolist()
+)
 
 # ------------------------------
-# 🔍 Filtrar apenas para RO
+# Exibição do mapa com os acidentes
 # ------------------------------
-df_localidades = df_localidades[df_localidades['uf'] == 'RO']
-df_acidentes = df_acidentes[df_acidentes['uf_acidente'] == 'RO']
+st.title("📍 Mapa de Acidentes do Brasil")
+
+df_acidentes_mapa = df_acidentes.copy()
+df_acidentes_mapa.rename(columns={"latitude_acidente": "latitude"}, inplace=True)
+df_acidentes_mapa.rename(columns={"longitude_acidente": "longitude"}, inplace=True)
+
+df_acidentes_mapa.dropna(subset=['latitude', 'longitude'], inplace=True)
+
+st.map(df_acidentes_mapa, zoom=4, use_container_width=True)
+
+
+# ------------------------------
+# 🔍 Filtrar apenas para o estado selecionado
+# ------------------------------
+if opcao != "Todos os Estados":
+    df_localidades = df_localidades[df_localidades['uf'] == opcao]
+    df_acidentes = df_acidentes[df_acidentes['uf_acidente'] == opcao]
 
 # ------------------------------
 # 📊 Agrupar acidentes por município (IBGE)
@@ -34,7 +57,7 @@ df_acidentes_por_cidade = pd.merge(
 top5 = df_acidentes_por_cidade.sort_values(by='total_acidentes', ascending=False).head(5)
 
 # Título da seção
-st.subheader("🚗 Top 5 Cidades com Mais Acidentes em RO")
+st.subheader(f"🚗 Top 5 Cidades com Mais Acidentes em {opcao}")
 
 # Gráfico relativo à população
 fig = px.bar(
@@ -68,7 +91,7 @@ df_relativo['acidentes_por_mil_hab'] = (df_relativo['total_acidentes'] / df_rela
 top5_relativo = df_relativo.sort_values(by='acidentes_por_mil_hab', ascending=False).head(5)
 
 # Título do novo gráfico
-st.subheader("📊 Top 5 Cidades com Maior Índice de Acidentes por Habitante em RO")
+st.subheader(f"📊 Top 5 Cidades com Maior Índice de Acidentes por Habitante em {opcao}")
 
 # Gráfico relativo à população
 fig = px.bar(
@@ -101,7 +124,7 @@ df_veiculos['acidentes_por_mil_veic'] = (df_veiculos['total_acidentes'] / df_vei
 top5_veiculos = df_veiculos.sort_values(by='acidentes_por_mil_veic', ascending=False).head(5)
 
 # Título do novo gráfico
-st.subheader("🚘 Top 5 Cidades com Maior Índice de Acidentes por Veículo em RO")
+st.subheader(f"🚘 Top 5 Cidades com Maior Índice de Acidentes por Veículo em {opcao}")
 
 # Criar o gráfico
 fig = px.bar(
