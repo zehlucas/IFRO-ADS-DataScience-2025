@@ -3,8 +3,8 @@ import streamlit as st
 import plotly.express as px
 
 # Carregar os nossos datasets
-df_acidentes = pd.read_csv("./acidentes_2022.csv")
-df_localidades = pd.read_csv("./localidades_2022.csv")
+df_acidentes = pd.read_csv("../acidentes_2022.csv")
+df_localidades = pd.read_csv("../localidades_2022.csv")
 
 # Filtrar os dados de Rondônia
 df_acidentes = df_acidentes[df_acidentes['uf_acidente'] == 'RO']

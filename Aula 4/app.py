@@ -5,8 +5,8 @@ import plotly.express as px
 # ------------------------------
 # 📥 Carregar os dataframes
 # ------------------------------
-df_localidades = pd.read_csv("localidades.csv")
-df_acidentes = pd.read_csv("acidentes.csv", low_memory=False)
+df_localidades = pd.read_csv("../localidades.csv", low_memory=False)
+df_acidentes = pd.read_csv("../acidentes.csv", low_memory=False)
 
 # ------------------------------
 # 📊 Menu lateral para seleção do estado
