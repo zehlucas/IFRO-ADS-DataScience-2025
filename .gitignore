@@ -11,7 +11,10 @@ __pycache__/
 .vscode/
 
 # Dados temporários ou sensíveis
-*.csv
+acidentes.csv
+localidades.csv
+tipo_veiculo.csv
+
 *.tsv
 *.log
 *.sqlite3
