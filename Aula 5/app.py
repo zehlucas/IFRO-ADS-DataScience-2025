@@ -2,11 +2,20 @@ import streamlit as st
 import pandas as pd
 import altair as alt
 import plotly.express as px
+
+st.title("📊 Dashboard de Acidentes - Página Inicial")
+
 # ------------------------------
 # 📥 Carregar os dataframes
 # ------------------------------
-df_localidades = pd.read_csv("../localidades.csv", low_memory=False)
-df_acidentes = pd.read_csv("../acidentes.csv", low_memory=False)
+if 'df_localidades' not in st.session_state:
+    st.session_state['df_localidades'] = pd.read_csv("../localidades.csv", low_memory=False)
+if 'df_acidentes' not in st.session_state:
+    st.session_state['df_acidentes'] = pd.read_csv("../acidentes.csv", low_memory=False)
+
+df_localidades = st.session_state['df_localidades']
+df_acidentes = st.session_state['df_acidentes']
+
 
 # ------------------------------
 # 📊 Menu lateral para seleção do estado
@@ -16,6 +25,14 @@ st.sidebar.title("🚦 Análise de Acidentes dos Estados Brasileiros")
 opcao = st.sidebar.selectbox(
     "Selecione o estado", ["Todos os Estados"] + df_localidades['uf'].unique().tolist()
 )
+
+# ------------------------------
+# 🔍 Filtrar apenas para o estado selecionado
+# ------------------------------
+if opcao != "Todos os Estados":
+    df_localidades = df_localidades[df_localidades['uf'] == opcao]
+    df_acidentes = df_acidentes[df_acidentes['uf_acidente'] == opcao]
+
 
 # ------------------------------
 # Exibição do mapa com os acidentes
@@ -31,12 +48,6 @@ st.header("Mapa de Acidentes do Brasil")
 st.map(df_acidentes_mapa, zoom=4, use_container_width=True)
 
 
-# ------------------------------
-# 🔍 Filtrar apenas para o estado selecionado
-# ------------------------------
-if opcao != "Todos os Estados":
-    df_localidades = df_localidades[df_localidades['uf'] == opcao]
-    df_acidentes = df_acidentes[df_acidentes['uf_acidente'] == opcao]
 
 # ------------------------------
 # 📊 Agrupar acidentes por município (IBGE)
