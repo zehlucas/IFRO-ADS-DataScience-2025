@@ -22,7 +22,6 @@ tipo_veiculo.csv
 *.h5
 
 # Arquivos gerados por modelos
-*.pkl
 *.joblib
 *.hdf5
 
