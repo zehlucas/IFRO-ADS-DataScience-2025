@@ -20,7 +20,7 @@ platformdirs==4.3.7
 prompt_toolkit==3.0.50
 psutil==7.0.0
 pure_eval==0.2.3
-Pygments==2.19.1
+Pygments==2.20.0
 python-dateutil==2.9.0.post0
 pytz==2025.2
 pywin32==310
